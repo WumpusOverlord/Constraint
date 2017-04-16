@@ -35,7 +35,7 @@ public class BacktrackSearch {
 
         while (!solved) {
             if (unlabelled.size() == 0) {
-               System.out.println("No unlabelled");
+                System.out.println("No unlabelled");
                 return state;
             } else {
 
@@ -51,21 +51,28 @@ public class BacktrackSearch {
 
                 // while (!solved) {
 
-                String x = pickVariable(unlabelled);
 
                 //Pick a variable
-
+                String x = pickVariable(unlabelled);
 
                 //Pick a value
+                Integer value = selectValueToAssign(x, unlabelled);
+
+                //Assign value
+
+                //  LinkedList variableDomain = getDomain(x);
 
 
-                //Assign value and forward check if (forwardCheck(variable, assignment, state)) {assign, backtrack }
+                // forward check if (forwardCheck(variable, assignment, state)) {assign, backtrack }
 
-                //Else if exclude(variable, assignment, state)) {assign, backtrack}
+                //Else unassign value
+                // if exclude(variable, assignment, state)) {assign, backtrack}
 
                 //FOr the Constriants - FIND WHICH INDEX IS IN LABELLED
 
 //Removed && valid check. Will introduce a new class called arc Consistency which checks all the other variables.
+                LinkedList variableDomain = assignValue(state, x, value);
+
                 if (forwardChecking(x, state)) {
 
                     //NOW ASSIGN THE VARIABLE?
@@ -76,7 +83,11 @@ public class BacktrackSearch {
                         System.out.println("Solved");
                         return result;
                     }
-                } else if (state.exclude(x, labelled.get(x))) {
+                } else {
+
+                    excludeValue(state, x, variableDomain);
+
+                    //  if (state.exclude(x, labelled.get(x))) {
 
                     State result = backtrack(state);
                     if (result != null) {
@@ -84,8 +95,8 @@ public class BacktrackSearch {
                         System.out.println("Solved");
                         return result;
                     }
+                    // }
                 }
-
                 // }
            /* else {
                 System.out.println("Solved");
@@ -105,44 +116,86 @@ public class BacktrackSearch {
 
 }*/
 
+    public LinkedList<Integer> getDomain(String x){
+
+        return unlabelled.get(x);
+
+    }
+
+
+    public LinkedList<Integer> assignValue(State state, String variableIndex, Integer valueToAssign){
+
+        //Inputs = State state, String variableIndex, Integer valueToAssign
+
+        //get Domain and
+        LinkedList<Integer> domain = state.unlabelled.get(variableIndex);
+
+        //remove value to Assign
+        domain.remove(valueToAssign);
+
+        //remove variable from State - unlabelled
+        state.unlabelled.remove(variableIndex);
+
+
+        //Add variable To Labelled with the value To Assign
+        state.labelled.put(variableIndex, valueToAssign);
+
+
+        return domain;
+
+    }
+
+    //LinkedList variableDomain
+    public void excludeValue(State state, String variableIndex, LinkedList variableDomain){
+
+
+        // LinkedList<Integer> domain = state.unlabelled.get(variableIndex);
+
+        //remove value to Assign
+        // domain.remove(valueToAssign);
+
+        //remove variable from State - unlabelled
+        state.labelled.remove(variableIndex);
+
+
+        //Add variable To Labelled with the value To Assign
+        state.unlabelled.put(variableIndex, variableDomain);
+
+
+        // return domain;
+
+    }
+
+
+
+
+
+
     public String pickVariable(HashMap<String, LinkedList<Integer>> unlabelled) {
 
-         List<String> keysAsArray = new ArrayList<String>(unlabelled.keySet());
+        List<String> keysAsArray = new ArrayList<String>(unlabelled.keySet());
         Random r = new Random();
-        String i = keysAsArray.get(r.nextInt(keysAsArray.size()));
-        ArrayList<String> keys = new ArrayList<String>(unlabelled.keySet());
+        String variableToAssign = keysAsArray.get(r.nextInt(keysAsArray.size()));
 
-//        while (unlabelled.get(i).size() <= 1) {
-//
-//
-//            r = new Random();
-//            i = keysAsArray.get(r.nextInt(keysAsArray.size()));
-//            if (unlabelled.get(i).size() > 1) {
-//                break;
-//            }
-//
-//        }
-
-        if (unlabelled.get(i).size() >= 1) {
-            LinkedList<Integer> varDomain = unlabelled.get(i);
+        return variableToAssign;
+    }
 
 
+    public Integer selectValueToAssign(String variableToAssign, HashMap<String, LinkedList<Integer>> unlabelled) {
+
+        Integer valueToAssign = null;
+        if (unlabelled.get(variableToAssign).size() >= 1) {
+            LinkedList<Integer> varDomain = unlabelled.get(variableToAssign);
             Random r2 = new Random();
-            Integer integer = varDomain.get(r2.nextInt(varDomain.size()));
-            LinkedList<Integer> integers = new LinkedList<Integer>();
-            unlabelled.remove(i);
-
-            LinkedList<Integer> label = new LinkedList<>();
-            label.add(integer);
-
-            labelled.put(i, label);
+            valueToAssign = varDomain.get(r2.nextInt(varDomain.size()));
 
         }
-
-        return i;
+        return valueToAssign;
     }
 
     public Boolean forwardChecking(String i, State state) {
+
+//ONLY CONSTRAINTS WHICH ARE REFERENCED IN UNASSIGNED VARIABLES?
 
 
         for (Constraint c : constraints) {
@@ -165,7 +218,7 @@ public class BacktrackSearch {
 //                }
 
 //
-                if (!c.Constrain(state.labelled.get(i).getFirst(), state.unlabelled.get(c.index2))) {
+                if (!c.Constrain(state.labelled.get(i), state.unlabelled.get(c.index2))) {
                     return false;
                 }
             }

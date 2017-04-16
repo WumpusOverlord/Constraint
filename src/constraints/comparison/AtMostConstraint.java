@@ -13,6 +13,10 @@ public class AtMostConstraint extends ComparisonConstraint {
         super(index1, index2);
     }
 
+    @Override
+    public Boolean Constrain(Integer assignedVariable, LinkedList UnassignedDomain) {
+        return null;
+    }
 
 
     @Override

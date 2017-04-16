@@ -125,50 +125,50 @@ System.out.println("error");
         return false;
     }
 
-    public Boolean exclude(String index, Integer valueToExclude) {
-
-       LinkedList<Integer> numbers = new LinkedList<Integer>(this.domain.get(index));
-//numbers = this.labelled.get(index);
-       // LinkedList<Integer> numbers2 = new LinkedList<>(this. unlabelled.get(index));
-
-//        for (Integer i: valueToExclude){
-//            numbers.remove(i);
+//    public Boolean exclude(String index, Integer valueToExclude) {
+//
+//       LinkedList<Integer> numbers = new LinkedList<Integer>(this.domain.get(index));
+////numbers = this.labelled.get(index);
+//       // LinkedList<Integer> numbers2 = new LinkedList<>(this. unlabelled.get(index));
+//
+////        for (Integer i: valueToExclude){
+////            numbers.remove(i);
+////        }
+//
+//        if (numbers.contains(valueToExclude)){
+//            this.unlabelled.get(index).remove(valueToExclude);
 //        }
-
-        if (numbers.contains(valueToExclude)){
-            this.unlabelled.get(index).remove(valueToExclude);
-        }
-
-
-
-      //  this.labelled.get(index).clear();
-       // this.labelled.get(index).addAll(numbers);
-
-       //this.unlabelled.replace(index, domain.get(index));//=numbers2;
-      //  this.labelled.replace(index, numbers2);
-
-     /*  this.unlabelled.get(index);
-
-
-        this.unlabelled.get(index);
-
-        if (this.unlabelled.get(index).size()==1){
-             return false;
-        }
-        else {
-//VariableWithDomain.Index i = variable.getIndex();
-LinkedList<Integer> v = this.unlabelled.get(index);
-v.remove(valueToExclude);
-
-//variable.getValues().remove(valueToExclude);
-
-//System.out.println(variable.getValues().size());
-            System.out.println();
-
-        }*/
-
-        return true;
-    }
+//
+//
+//
+//      //  this.labelled.get(index).clear();
+//       // this.labelled.get(index).addAll(numbers);
+//
+//       //this.unlabelled.replace(index, domain.get(index));//=numbers2;
+//      //  this.labelled.replace(index, numbers2);
+//
+//     /*  this.unlabelled.get(index);
+//
+//
+//        this.unlabelled.get(index);
+//
+//        if (this.unlabelled.get(index).size()==1){
+//             return false;
+//        }
+//        else {
+////VariableWithDomain.Index i = variable.getIndex();
+//LinkedList<Integer> v = this.unlabelled.get(index);
+//v.remove(valueToExclude);
+//
+////variable.getValues().remove(valueToExclude);
+//
+////System.out.println(variable.getValues().size());
+//            System.out.println();
+//
+//        }*/
+//
+//        return true;
+//    }
 
 public HashMap<String, LinkedList<Integer>> getStateMap(){
 

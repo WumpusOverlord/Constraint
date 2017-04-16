@@ -18,18 +18,18 @@ public class InequalityConstraint extends Constraint {
     public Boolean Constrain(State state, String variable1, String variable2) {
 
         if (state.labelled.containsKey(variable1) && state.labelled.containsKey(variable2)) {
-            return !Objects.equals(state.labelled.get(variable1).getFirst(), state.labelled.get(variable2).getFirst());
+            return !Objects.equals(state.labelled.get(variable1), state.labelled.get(variable2));
         }
 
         if (state.labelled.containsKey(variable1)) {
 
 //
-            if (!state.unlabelled.get(variable2).contains(state.labelled.get(variable1).getFirst())){
+            if (!state.unlabelled.get(variable2).contains(state.labelled.get(variable1))){
 
                 return true;
             }
 
-            else if (!state.unlabelled.get(variable2).remove(state.labelled.get(variable1).getFirst())){
+            else if (!state.unlabelled.get(variable2).remove(state.labelled.get(variable1))){
 
                 return false;
             }
@@ -37,12 +37,12 @@ public class InequalityConstraint extends Constraint {
         }
         else if (state.labelled.containsKey(variable2)) {
 
-            if (!state.unlabelled.get(variable1).contains(state.labelled.get(variable2).getFirst())){
+            if (!state.unlabelled.get(variable1).contains(state.labelled.get(variable2))){
 
                 return true;
             }
 
-            else if (!state.unlabelled.get(variable1).remove(state.labelled.get(variable2).getFirst())){
+            else if (!state.unlabelled.get(variable1).remove(state.labelled.get(variable2))){
 
                 return false;
             }

@@ -15,6 +15,11 @@ public class GreaterThanConstraint extends ComparisonConstraint {
     }
 
     @Override
+    public Boolean Constrain(Integer assignedVariable, LinkedList UnassignedDomain) {
+        return null;
+    }
+
+    @Override
     public int getBoundaryValue(LinkedList<Integer> variable) {
         int max = variable.get(0);
         for (int i : variable){
