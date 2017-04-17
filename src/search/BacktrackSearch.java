@@ -2,7 +2,6 @@ package search;
 
 import constraints.Constraint;
 import dataStructure.State;
-import dataStructure.VariableWithDomain;
 
 import java.util.*;
 
@@ -53,14 +52,18 @@ public class BacktrackSearch {
 
 
                 //Pick a variable
-                String x = pickVariable(unlabelled);
+                String variable = pickVariable(unlabelled);
 
                 //Pick a value
-                Integer value = selectValueToAssign(x, unlabelled);
+                Integer value = selectValueToAssign(variable, unlabelled);
 
                 //Assign value
 
                 //  LinkedList variableDomain = getDomain(x);
+
+       ;
+
+//BranchFCLeft(unlabelled, variable, value);
 
 
                 // forward check if (forwardCheck(variable, assignment, state)) {assign, backtrack }
@@ -71,9 +74,9 @@ public class BacktrackSearch {
                 //FOr the Constriants - FIND WHICH INDEX IS IN LABELLED
 
 //Removed && valid check. Will introduce a new class called arc Consistency which checks all the other variables.
-                LinkedList variableDomain = assignValue(state, x, value);
+                LinkedList variableDomain = assignValue(state, variable, value);
 
-                if (forwardChecking(x, state)) {
+                if (reviseFutureArcs(variable, state)) {
 
                     //NOW ASSIGN THE VARIABLE?
 
@@ -85,23 +88,23 @@ public class BacktrackSearch {
                     }
                 } else {
 
-                    excludeValue(state, x, variableDomain);
+                   if  (excludeValue(state, variable, variableDomain) && reviseFutureArcs(variable, state)){
 
-                    //  if (state.exclude(x, labelled.get(x))) {
+                       State result = backtrack(state);
+                       if (result != null) {
+                           solved = true;
+                           System.out.println("Solved");
+                           return result;
+                       }
 
-                    State result = backtrack(state);
-                    if (result != null) {
-                        solved = true;
-                        System.out.println("Solved");
-                        return result;
-                    }
-                    // }
+
+                   }
+
+                   restoreValue(state, variable, variableDomain, value);
+
                 }
-                // }
-           /* else {
-                System.out.println("Solved");
 
-            }*/
+                System.out.println("UNDOING");
             }
 
         }
@@ -110,7 +113,39 @@ public class BacktrackSearch {
     }
 
 
-
+//   public void branchFCLeft(State state, LinkedList unlabelled, String variable, Integer value){
+//
+//        assignValue(state, variable, value);
+//
+//        if (reviseFutureArcs(state, unlabelled, variable)){
+//
+//       }
+//
+//
+//    }
+//
+//
+//    public void reviseFutureArcs(State state, LinkedList<String> varList, String variable){
+//
+//Boolean consistent = true;
+//
+//        for (String futureVariable : varList){
+//consistent = revise(Constraint(futureVar, var));
+//
+//
+//}
+//
+//    }
+//
+//    public void arc(State state, String futureVar, String var){
+//
+//
+//
+//    }
+//    public void assignValue(State state, String variable, Integer value){
+//state.
+//
+//    }
 /*public State subroutine(){
 
 
@@ -146,23 +181,30 @@ public class BacktrackSearch {
     }
 
     //LinkedList variableDomain
-    public void excludeValue(State state, String variableIndex, LinkedList variableDomain){
+    public Boolean excludeValue(State state, String variableIndex, LinkedList variableDomain){
 
 
-        // LinkedList<Integer> domain = state.unlabelled.get(variableIndex);
 
-        //remove value to Assign
-        // domain.remove(valueToAssign);
-
-        //remove variable from State - unlabelled
+        if (variableDomain.size()<=1){
+            return false;
+        }
         state.labelled.remove(variableIndex);
 
 
         //Add variable To Labelled with the value To Assign
         state.unlabelled.put(variableIndex, variableDomain);
+        return true;
+
+    }
+
+    public Boolean restoreValue(State state, String variableIndex, LinkedList variableDomain, Integer value){
 
 
-        // return domain;
+        state.labelled.remove(variableIndex);
+
+        variableDomain.add(value);
+        state.unlabelled.put(variableIndex, variableDomain);
+        return true;
 
     }
 
@@ -193,32 +235,15 @@ public class BacktrackSearch {
         return valueToAssign;
     }
 
-    public Boolean forwardChecking(String i, State state) {
+    public Boolean reviseFutureArcs(String variable, State state) {
 
 //ONLY CONSTRAINTS WHICH ARE REFERENCED IN UNASSIGNED VARIABLES?
 
 
         for (Constraint c : constraints) {
-            if (c.index2.equals(i) || c.index1.equals(i)) {
 
-                String index = c.index2;
-                if (c.index1.equals(i)){
-                    index = c.index1;
-                }
-
-
-                //index = index1 || index = index2
-                //set add (i1,i2) if set does not contain i1,i2 or i2,i1
-
-
-                //NOTE NEED TO CHANGE THIS SO IT ONLY COMPARES THE UPDATED VARIABLE TO THE UNLABELLED LISTS AS FORWARD CHECKING DOES
-                //NOT REQUIRE CHECKING BACKWARDS (see slides)
-//                if (!c.Constrain(state.labelled.get(i), state.unlabelled.get(c.index1))) {
-//                    return false;
-//                }
-
-//
-                if (!c.Constrain(state.labelled.get(i), state.unlabelled.get(c.index2))) {
+            if (c.index2.equals(variable) || c.index1.equals(variable)) {
+                if (!c.revise(state)) {
                     return false;
                 }
             }

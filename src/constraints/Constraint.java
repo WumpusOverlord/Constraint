@@ -84,7 +84,22 @@ return true;
 //    public Boolean Constrain(String variable1, String variable2) {
 //        return null;
 //    }
+public Boolean revise (State state){
 
+        if (state.unlabelled.containsKey(index1) || state.unlabelled.containsKey(index2)){
+          //  reviseArc(state);
+
+            return Constrain(state, index1, index2);
+
+
+    }
+
+    return true;
+
+}
+
+
+//public abstract void reviseArc(State state);
 
     public abstract Boolean Constrain(Integer assignedVariable, LinkedList UnassignedDomain);
 

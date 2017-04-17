@@ -29,7 +29,7 @@ public class InequalityConstraint extends Constraint {
                 return true;
             }
 
-            else if (!state.unlabelled.get(variable2).remove(state.labelled.get(variable1))){
+            else if (state.unlabelled.get(variable2).size()==1 || !state.unlabelled.get(variable2).remove(state.labelled.get(variable1))){
 
                 return false;
             }
@@ -42,7 +42,7 @@ public class InequalityConstraint extends Constraint {
                 return true;
             }
 
-            else if (!state.unlabelled.get(variable1).remove(state.labelled.get(variable2))){
+            else if (state.unlabelled.get(variable1).size()==1 || !state.unlabelled.get(variable1).remove(state.labelled.get(variable2))){
 
                 return false;
             }

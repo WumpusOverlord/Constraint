@@ -32,12 +32,12 @@ public class Main {
             LinkedList<Integer> domain1 = new LinkedList<>();
             domain1.add(1);
             domain1.add(2);
-            domain1.add(3);
+            //domain1.add(3);
 
             LinkedList<Integer> domain2 = new LinkedList<>();
             domain2.add(1);
             domain2.add(2);
-            domain2.add(3);
+           // domain2.add(3);
 
 
             LinkedList<Constraint> constraints = new LinkedList<Constraint>();
